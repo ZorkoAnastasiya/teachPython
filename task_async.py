@@ -7,6 +7,11 @@ from my_function import sum_max
 app = FastAPI()
 
 
+@app.get('/')
+async def hello():
+    return {"message": "Hello World!"}
+    
+
 @app.get('/sum_cube/{num}')
 async def cube(num: int):
     sum_cube = sum([x**3 for x in range(1, num+1)])
