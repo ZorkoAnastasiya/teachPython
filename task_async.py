@@ -9,7 +9,7 @@ app = FastAPI()
 
 @app.get('/')
 async def hello():
-    return {"message": "Hello World!"}
+    return {"Message": "Hello World!"}
     
 
 @app.get('/sum_cube/{num}')
