@@ -3,9 +3,9 @@
 ### Example user template
 
 # IntelliJ project files
-__pycharm__
 .idea
 *.iml
 *.xml
+*.pyc
 out
 gen
