@@ -9,7 +9,7 @@ app = FastAPI()
 @app.get('/')
 async def hello():
     return {"Message": "Hello World!"}
-    
+
 
 @app.get('/sum_cube/{num}')
 async def cube(num: int):
@@ -39,3 +39,15 @@ async def handler(request: Request, response: Response, data: str = Body(...)):
         numbers[user].append(int(data))
         my_function.write_file(filename, numbers, user)
         return {"Введеное число": numbers[user]}
+
+
+@app.post('/task_numbers')
+async def handler_2(request: Request, response: Response, data: str = Body(...)):
+    user = my_function.get_user(request) or my_function.gen_random_name()
+    response.set_cookie("user", user)
+    if data == "stop":
+        return my_function.get_data(user)
+    else:
+        assert data.isdigit()
+        my_function.save_number(user, int(data))
+        return data
