@@ -14,3 +14,4 @@ def preparation_db():
 
 if __name__ == '__main__':
     preparation_db()
+    print('DB is prepared')
