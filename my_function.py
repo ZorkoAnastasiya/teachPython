@@ -91,7 +91,7 @@ def read_file(filename: str, user: str) -> int:
         return sum(data[user])
 
 
-def execute_sql(sql: list) -> List[tuple]:
+def execute_sql(sql: str) -> List[tuple]:
     """Sends a request to the database."""
 
     rows = []
@@ -99,7 +99,7 @@ def execute_sql(sql: list) -> List[tuple]:
 
     with closing(psycopg2.connect(dsn)) as connection:
         with closing(connection.cursor()) as cursor:
-            cursor.execute(*sql)
+            cursor.execute(sql)
             connection.commit()
             try:
                 rows = cursor.fetchall()
@@ -111,14 +111,12 @@ def execute_sql(sql: list) -> List[tuple]:
 def get_data(user: str)-> Optional[int]:
     """Retrieving data by name."""
 
-    sql = [
-        """
-           SELECT number 
-           FROM numbers 
-           WHERE name = %s;
-        """,
-        (user,)
-    ]
+    sql = f"""
+        SELECT number 
+        FROM numbers 
+        WHERE name = '{user}'
+        ;
+    """
 
     result = execute_sql(sql)
 
@@ -144,15 +142,12 @@ def update_number(user: str, number: int) -> None:
     num = get_data(user)
     num += number
 
-    sql = [
-        """
-           UPDATE numbers SET number = %s 
-           WHERE name = %s
-           RETURNING numbers.number AS number
-           ;
-        """,
-        (num, user)
-    ]
+    sql = f"""
+        UPDATE numbers SET number = {num} 
+        WHERE name = '{user}'
+        RETURNING numbers.number AS number
+        ;
+    """
 
     execute_sql(sql)
 
@@ -160,15 +155,12 @@ def update_number(user: str, number: int) -> None:
 def insert_new_user(user: str, number: int) -> None:
     """Adding new data to the database."""
 
-    sql = [
-        """
-           INSERT INTO numbers(name, number)
-           VALUES (%s, %s)
-           RETURNING numbers.number AS number
-           ;
-        """,
-        (user, number)
-    ]
+    sql = f"""
+        INSERT INTO numbers(name, number)
+        VALUES ('{user}', {number})
+        RETURNING numbers.number AS number
+        ;
+    """
 
     execute_sql(sql)
 
