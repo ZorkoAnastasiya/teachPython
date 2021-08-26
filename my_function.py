@@ -88,7 +88,7 @@ def read_file(filename: str, user: str) -> int:
         return sum(data[user])
 
 
-def execute_sql(sql: str) -> List[tuple]:
+def execute_sql(sql: list) -> List[tuple]:
     """Передает запрос в БД"""
 
     rows = []
@@ -96,7 +96,7 @@ def execute_sql(sql: str) -> List[tuple]:
 
     with closing(psycopg2.connect(dsn)) as connection:
         with closing(connection.cursor()) as cursor:
-            cursor.execute(sql)
+            cursor.execute(*sql)
             connection.commit()
             try:
                 rows = cursor.fetchall()
@@ -108,11 +108,14 @@ def execute_sql(sql: str) -> List[tuple]:
 def get_data(user: str)-> Optional[int]:
     """Получение данных по имени."""
 
-    sql = f"""
-        SELECT number FROM numbers
-        WHERE name = '{user}'
-        ;
-    """
+    sql = [
+        """
+           SELECT number 
+           FROM numbers 
+           WHERE name = %s;
+        """,
+        (user,)
+    ]
 
     result = execute_sql(sql)
 
@@ -138,14 +141,15 @@ def update_number(user: str, number: int) -> None:
     num = get_data(user)
     num += number
 
-    sql = f"""
-        UPDATE numbers
-        SET
-           number = {num}
-        WHERE 
-           name = '{user}'
-        ;
-    """
+    sql = [
+        """
+           UPDATE numbers SET number = %s 
+           WHERE name = %s
+           RETURNING numbers.number AS number
+           ;
+        """,
+        (num, user)
+    ]
 
     execute_sql(sql)
 
@@ -153,11 +157,15 @@ def update_number(user: str, number: int) -> None:
 def insert_new_user(user: str, number: int) -> None:
     """Добавление новых данных в БД."""
 
-    sql = f"""
-            INSERT INTO numbers(name, number)
-            VALUES ('{user}', {number})
-            ;
+    sql = [
         """
+           INSERT INTO numbers(name, number)
+           VALUES (%s, %s)
+           RETURNING numbers.number AS number
+           ;
+        """,
+        (user, number)
+    ]
 
     execute_sql(sql)
 
