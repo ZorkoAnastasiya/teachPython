@@ -4,7 +4,7 @@ import my_function
 
 def preparation_db():
     sql = """
-        CREATE TABLE numbers(
+        CREATE TABLE IF NOT EXISTS numbers(
         name text NOT NULL UNIQUE,
         number integer NOT NULL DEFAULT 0
         );
