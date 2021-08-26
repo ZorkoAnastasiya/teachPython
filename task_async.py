@@ -32,10 +32,12 @@ async def handler(
         response: Response,
         data: str = Body(...)
 ):
+
     filename = "Numbers.txt"
     numbers = defaultdict(list)
     user = my_function.get_user(request) or my_function.gen_random_name()
     response.set_cookie("user", user)
+
     if data == "stop":
         return my_function.read_file(filename, user)
     else:
@@ -51,8 +53,10 @@ async def handler_2(
         response: Response,
         data: str = Body(...)
 ):
+
     user = my_function.get_user(request) or my_function.gen_random_name()
     response.set_cookie("user", user)
+
     if data == "stop":
         return my_function.get_data(user)
     else:

@@ -2,20 +2,24 @@
 import httpx
 import pytest
 from task_async import app
+from random import randint
 
 
 @pytest.mark.asyncio
-async def test():
+async def test_1():
     url = "/task_numbers"
-    async with httpx.AsyncClient(app=app, base_url="http://asgi") as client:
-        resp: httpx.Response = await client.post(url, json=1)
-        assert resp.status_code == 200
-        assert resp.json() == "1"
 
-        resp = await client.post(url, json=1)
+    a, b = [randint(0, 100) for _ in "ab"]
+
+    async with httpx.AsyncClient(app=app, base_url="http://asgi") as client:
+        resp: httpx.Response = await client.post(url, json=a)
         assert resp.status_code == 200
-        assert resp.json() == "1"
+        assert resp.json() == str(a)
+
+        resp = await client.post(url, json=b)
+        assert resp.status_code == 200
+        assert resp.json() == str(b)
 
         resp = await client.post(url, json="stop")
         assert resp.status_code == 200
-        assert resp.json() == 2
+        assert resp.json() == a + b
