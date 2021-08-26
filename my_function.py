@@ -16,7 +16,10 @@ def sum_cube(num: int) -> dict:
 
 
 def series(start: int, finish: int) -> dict:
-    """Возвращает два списка с четными и нечетными числами, выбронных из указанного диапазона. """
+    """
+        Возвращает два списка с четными и нечетными числами,
+        выбронных из указанного диапазона.
+    """
     list_even_num = [x for x in range(start, finish + 1) if x % 2 == 0]
     list_odd_num = [x for x in range(start, finish + 1) if x % 2 != 0]
     return {

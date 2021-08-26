@@ -27,7 +27,11 @@ async def prime_numbers(num: int):
  
 
 @app.post('/task/add_number')
-async def handler(request: Request, response: Response, data: str = Body(...)):
+async def handler(
+        request: Request,
+        response: Response,
+        data: str = Body(...)
+):
     filename = "Numbers.txt"
     numbers = defaultdict(list)
     user = my_function.get_user(request) or my_function.gen_random_name()
@@ -42,7 +46,11 @@ async def handler(request: Request, response: Response, data: str = Body(...)):
 
 
 @app.post('/task_numbers')
-async def handler_2(request: Request, response: Response, data: str = Body(...)):
+async def handler_2(
+        request: Request,
+        response: Response,
+        data: str = Body(...)
+):
     user = my_function.get_user(request) or my_function.gen_random_name()
     response.set_cookie("user", user)
     if data == "stop":

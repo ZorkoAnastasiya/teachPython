@@ -1,4 +1,4 @@
-# test
+# coding=utf-8
 import httpx
 import pytest
 from task_async import app
