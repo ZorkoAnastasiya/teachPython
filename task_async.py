@@ -44,7 +44,7 @@ async def handler(
         assert data.isdigit()
         numbers[user].append(int(data))
         my_function.write_file(filename, numbers, user)
-        return {"Введеное число": numbers[user]}
+        return {"Number entered": numbers[user]}
 
 
 @app.post('/task_numbers')

@@ -10,55 +10,58 @@ from typing import Optional, List
 
 
 def sum_cube(num: int) -> dict:
-    """Возвращает сумму чисел от 1 до указанного числа, возведенных в куб."""
+    """
+        Returns the sum of the numbers from 1 to the specified number, cubed.
+    """
 
     result = sum([x ** 3 for x in range(1, num + 1)])
 
-    return {"Сумма чисел возведенных в куб": result}
+    return {"The sum of the numbers cubed": result}
 
 
 def series(start: int, finish: int) -> dict:
     """
-        Возвращает два списка с четными и нечетными числами,
-        выбронных из указанного диапазона.
+        Returns two odd and even lists, selected from the specified range.
     """
 
     list_even_num = [x for x in range(start, finish + 1) if x % 2 == 0]
     list_odd_num = [x for x in range(start, finish + 1) if x % 2 != 0]
 
     return {
-        "Список четных чисел": list_even_num,
-        "Список нечетных чисел": list_odd_num
+        "List of even numbers": list_even_num,
+        "List of odd numbers": list_odd_num
     }
 
 
 def prime_numbers_call(num: int) -> dict:
-    """Определяет: является число простым или нет."""
+    """Determines whether the number is prime or not."""
 
     i = 2
     while i <= num // 2:
         if num % i != 0:
             if i == num // 2:
-                return {"Это простое число": num}
+                return {"This is a prime number": num}
             i += 1
         else:
-            return {"Это число не является простым": num}
+            return {"This number is not prime": num}
 
 
 def gen_random_name() -> str:
-    """Генерирует случайное число и переводит в 16-чную систему счисления."""
+    """
+        Generates a random number and converts it to 16-digit number system.
+    """
 
     return os.urandom(16).hex()
 
 
 def get_user(request: Request) -> str:
-    """Возвращает значение куки по ключу 'user'."""
+    """Returns the cookie value for the key 'user'."""
 
     return request.cookies.get("user")
 
 
 def write_file(filename: str, numbers: dict, user: str) -> None:
-    """Записывает данные в файл."""
+    """Writes data to a file."""
 
     file_path = Path(filename)
 
@@ -81,7 +84,7 @@ def write_file(filename: str, numbers: dict, user: str) -> None:
 
 
 def read_file(filename: str, user: str) -> int:
-    """Находит сумму чисел сохраненных в файл"""
+    """Finds the sum of the numbers stored in a file."""
 
     with open(filename) as file:
         data = json.load(file)
@@ -89,7 +92,7 @@ def read_file(filename: str, user: str) -> int:
 
 
 def execute_sql(sql: list) -> List[tuple]:
-    """Передает запрос в БД"""
+    """Sends a request to the database."""
 
     rows = []
     dsn = os.getenv("DATABASE_URL", "")
@@ -106,7 +109,7 @@ def execute_sql(sql: list) -> List[tuple]:
 
 
 def get_data(user: str)-> Optional[int]:
-    """Получение данных по имени."""
+    """Retrieving data by name."""
 
     sql = [
         """
@@ -128,7 +131,7 @@ def get_data(user: str)-> Optional[int]:
 
 
 def user_exists(user: str) -> bool:
-    """Проверка наличия имен в БД."""
+    """Checking the presence of names in the database."""
 
     result = get_data(user)
 
@@ -136,7 +139,7 @@ def user_exists(user: str) -> bool:
 
 
 def update_number(user: str, number: int) -> None:
-    """Обновление имеющихся данных в БД."""
+    """Updating the available data in the database."""
 
     num = get_data(user)
     num += number
@@ -155,7 +158,7 @@ def update_number(user: str, number: int) -> None:
 
 
 def insert_new_user(user: str, number: int) -> None:
-    """Добавление новых данных в БД."""
+    """Adding new data to the database."""
 
     sql = [
         """
@@ -171,7 +174,7 @@ def insert_new_user(user: str, number: int) -> None:
 
 
 def save_number(user: str, number: int)-> None:
-    """Сохранение данных в БД."""
+    """Saving data to the database."""
 
     if user_exists(user):
         update_number(user, number)

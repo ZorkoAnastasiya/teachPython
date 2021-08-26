@@ -6,7 +6,7 @@ from random import randint
 
 
 @pytest.mark.asyncio
-async def test_1():
+async def test():
     url = "/task_numbers"
 
     a, b = [randint(0, 100) for _ in "ab"]
