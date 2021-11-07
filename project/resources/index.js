@@ -1,5 +1,5 @@
 const TASK_1_URL = '/sum_cube/';
-const TASK_3_URL = '/prime_numbers_call/';
+const TASK_3_URL = '/prime_numbers/';
 
 
 async function api_call_get(url){
