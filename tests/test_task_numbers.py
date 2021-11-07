@@ -1,7 +1,7 @@
 # coding=utf-8
 import httpx
 import pytest
-from task_async import app
+from project.task_async import app
 from random import randint
 
 

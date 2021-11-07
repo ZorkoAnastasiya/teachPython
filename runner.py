@@ -1,6 +1,6 @@
 # coding=utf-8
 import uvicorn
-from task_async import app
+from project.task_async import app
 
 if __name__ == '__main__':
 

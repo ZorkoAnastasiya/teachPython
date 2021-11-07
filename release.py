@@ -1,5 +1,5 @@
 # coding=utf-8
-import my_function
+from project import my_function
 
 
 def preparation_db() -> None:

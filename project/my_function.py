@@ -3,23 +3,23 @@ import os
 import json
 import traceback
 import psycopg2
+from devtools import debug
 from contextlib import closing
 from fastapi import Request
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 
-def sum_cube(num: int) -> dict:
+def sum_cube(num: int) -> str:
     """
         Returns the sum of the numbers from 1 to the specified number, cubed.
     """
 
     result = sum([x ** 3 for x in range(1, num + 1)])
+    return f"The sum of the numbers cubed: {result}"
 
-    return {"The sum of the numbers cubed": result}
 
-
-def series(start: int, finish: int) -> dict:
+def series(start: int, finish: int) -> Dict[str, List[int]]:
     """
         Returns two odd and even lists, selected from the specified range.
     """
@@ -33,17 +33,21 @@ def series(start: int, finish: int) -> dict:
     }
 
 
-def prime_numbers_call(num: int) -> dict:
+def prime_numbers_call(num: int) -> Optional[Dict[str, int]]:
     """Determines whether the number is prime or not."""
 
+    result: Optional[Dict[str, int]] = None
     i = 2
     while i <= num // 2:
         if num % i != 0:
             if i == num // 2:
-                return {"This is a prime number": num}
+                result = {"This is a prime number": num}
+                return result
             i += 1
         else:
-            return {"This number is not prime": num}
+            result = {"This number is not prime": num}
+            return result
+    return result
 
 
 def gen_random_name() -> str:
@@ -54,7 +58,7 @@ def gen_random_name() -> str:
     return os.urandom(16).hex()
 
 
-def get_user(request: Request) -> str:
+def get_user(request: Request) -> Optional[str]:
     """Returns the cookie value for the key 'user'."""
 
     return request.cookies.get("user")
@@ -111,20 +115,20 @@ def execute_sql(sql: str) -> List[tuple]:
 def get_data(user: str)-> Optional[int]:
     """Retrieving data by name."""
 
+    num: Optional[int] = None
     sql = f"""
         SELECT number 
         FROM numbers 
         WHERE name = '{user}'
         ;
     """
-
     result = execute_sql(sql)
-
     try:
         num = result[0][0]
-    except IndexError:
-        return None
-
+    except IndexError as err:
+        finish = f"Work completed with error: {err.__doc__} {err}"
+        debug(finish)
+        return num
     return num
 
 
@@ -132,7 +136,6 @@ def user_exists(user: str) -> bool:
     """Checking the presence of names in the database."""
 
     result = get_data(user)
-
     return result is not None
 
 
@@ -140,16 +143,15 @@ def update_number(user: str, number: int) -> None:
     """Updating the available data in the database."""
 
     num = get_data(user)
-    num += number
-
-    sql = f"""
-        UPDATE numbers SET number = {num} 
-        WHERE name = '{user}'
-        RETURNING numbers.number AS number
-        ;
-    """
-
-    execute_sql(sql)
+    if num:
+        num += number
+        sql = f"""
+            UPDATE numbers SET number = {num} 
+            WHERE name = '{user}'
+            RETURNING numbers.number AS number
+            ;
+        """
+        execute_sql(sql)
 
 
 def insert_new_user(user: str, number: int) -> None:
@@ -161,7 +163,6 @@ def insert_new_user(user: str, number: int) -> None:
         RETURNING numbers.number AS number
         ;
     """
-
     execute_sql(sql)
 
 

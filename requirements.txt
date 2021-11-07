@@ -1,6 +1,8 @@
+starlette
 pytest
 httpx
 pydantic
 fastapi
 uvicorn
 psycopg2-binary
+devtools
