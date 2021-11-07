@@ -1,6 +1,7 @@
 const TASK_1_URL = '/sum_cube/';
 const TASK_3_URL = '/prime_numbers_call/';
 
+
 async function api_call_get(url){
     const request = await fetch(
         url, {

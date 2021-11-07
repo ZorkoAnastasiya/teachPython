@@ -52,8 +52,9 @@ async def numbers_list(start: int, finish: int) -> Dict[str, List[int]]:
 
 
 @app.get("/prime_numbers/{num}")
-async def prime_numbers(num: int) -> Optional[Dict[str, int]]:
-    return my_function.prime_numbers_call(num)
+async def prime_numbers(num: int) -> Dict[str, str]:
+    result: Optional[str] = my_function.prime_numbers_call(num)
+    return {"data": result}
 
 
 @app.post("/task/add_number")

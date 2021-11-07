@@ -36,19 +36,19 @@ def series(start: int, finish: int) -> Dict[str, List[int]]:
     }
 
 
-def prime_numbers_call(num: int) -> Optional[Dict[str, int]]:
+def prime_numbers_call(num: int) -> Optional[str]:
     """Determines whether the number is prime or not."""
 
-    result: Optional[Dict[str, int]] = None
+    result: Optional[str] = None
     i = 2
     while i <= num // 2:
         if num % i != 0:
             if i == num // 2:
-                result = {"This is a prime number": num}
+                result = f"Это простое число: {num}"
                 return result
             i += 1
         else:
-            result = {"This number is not prime": num}
+            result = f"Это число не является простым: {num}"
             return result
     return result
 
