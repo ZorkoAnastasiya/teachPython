@@ -26,8 +26,20 @@ async function setUpTask1(){
     });
 }
 
+async function setUpTask3(){
+    let input = document.querySelector("#task_3 input");
+    let span = document.querySelector("#task_3 span");
+
+    input.addEventListener("input", async function(){
+        const number = input.value;
+        const result = await prime_numbers_call(number);
+        span.textContent = result;
+    });
+}
+
 async function setUP(){
     await setUpTask1();
+    await setUpTask3();
 }
 
 document.addEventListener("DOMContentLoaded", setUP);
