@@ -15,8 +15,8 @@ def preparation_db() -> None:
     my_function.execute_sql(sql)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     preparation_db()
 
-    print('DATABASE is prepared')
+    print("DATABASE is prepared")

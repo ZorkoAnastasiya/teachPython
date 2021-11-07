@@ -1,60 +1,64 @@
 # coding=utf-8
-from typing import Dict, List, Union, Optional
-
-from project import my_function, utility
 from collections import defaultdict
-from fastapi import FastAPI, Body, Request, Response
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
+
+from fastapi import Body
+from fastapi import FastAPI
+from fastapi import Request
+from fastapi import Response
 from fastapi.responses import HTMLResponse
+
+from project import my_function
+from project import utility
 
 app = FastAPI()
 TypeNumber = Union[int, Dict[str, List[int]]]
 
 
-@app.get('/', response_class = HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def _(response: Response) -> Response:
     utility.apply_cache_headers(response)
-    return utility.static_response("project/resources/index.html", response_cls=HTMLResponse)
+    return utility.static_response(
+        "project/resources/index.html", response_cls=HTMLResponse
+    )
 
 
-@app.get('/html', response_class = HTMLResponse)
-async def html(response: Response) -> Response:
-    utility.apply_cache_headers(response)
-    return utility.static_response("project/resources/task_one.html", response_cls=HTMLResponse)
-
-
-@app.get('/img', response_class = Response)
+@app.get("/img", response_class=Response)
 async def img(response: Response) -> Response:
     utility.apply_cache_headers(response)
-    return utility.static_response("project/resources/Green_Python.jpg", binary = True)
+    return utility.static_response(
+        "project/resources/Green_Python.jpg", binary=True
+    )
 
 
-@app.get("/js", response_class = Response)
+@app.get("/js", response_class=Response)
 async def js(response: Response) -> Response:
     utility.apply_cache_headers(response)
     return utility.static_response("project/resources/index.js")
 
 
-@app.get('/sum_cube/{num}')
+@app.get("/sum_cube/{num}")
 async def cube(num: int) -> Dict[str, str]:
     result: str = my_function.sum_cube(num)
     return {"data": result}
 
 
-@app.get('/list_num/{start}/{finish}')
+@app.get("/list_num/{start}/{finish}")
 async def numbers_list(start: int, finish: int) -> Dict[str, List[int]]:
     return my_function.series(start, finish)
 
 
-@app.get('/prime_numbers/{num}')
+@app.get("/prime_numbers/{num}")
 async def prime_numbers(num: int) -> Optional[Dict[str, int]]:
     return my_function.prime_numbers_call(num)
- 
 
-@app.post('/task/add_number')
+
+@app.post("/task/add_number")
 async def handler(
-        request: Request,
-        response: Response,
-        data: str = Body(...)
+    request: Request, response: Response, data: str = Body(...)
 ) -> TypeNumber:
     filename = "Numbers.txt"
     numbers = defaultdict(list)
@@ -70,11 +74,9 @@ async def handler(
         return {"Number entered": numbers[user]}
 
 
-@app.post('/task_numbers')
+@app.post("/task_numbers")
 async def handler_2(
-        request: Request,
-        response: Response,
-        data: str = Body(...)
+    request: Request, response: Response, data: str = Body(...)
 ) -> Union[Optional[int], str]:
     user = my_function.get_user(request) or my_function.gen_random_name()
     response.set_cookie("user", user)

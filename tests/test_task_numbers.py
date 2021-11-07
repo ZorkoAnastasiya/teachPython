@@ -1,8 +1,10 @@
 # coding=utf-8
+from random import randint
+
 import httpx
 import pytest
+
 from project.task_async import app
-from random import randint
 
 
 @pytest.mark.asyncio

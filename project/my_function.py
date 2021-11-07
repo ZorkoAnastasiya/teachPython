@@ -1,27 +1,30 @@
 # coding=utf-8
-import os
 import json
+import os
 import traceback
+from contextlib import closing
+from pathlib import Path
+from typing import Dict
+from typing import List
+from typing import Optional
+
 import psycopg2
 from devtools import debug
-from contextlib import closing
 from fastapi import Request
-from pathlib import Path
-from typing import Optional, List, Dict
 
 
 def sum_cube(num: int) -> str:
     """
-        Returns the sum of the numbers from 1 to the specified number, cubed.
+    Returns the sum of the numbers from 1 to the specified number, cubed.
     """
 
     result = sum([x ** 3 for x in range(1, num + 1)])
-    return f"The sum of the numbers cubed: {result}"
+    return f"Сумма чисел в кубе: {result}"
 
 
 def series(start: int, finish: int) -> Dict[str, List[int]]:
     """
-        Returns two odd and even lists, selected from the specified range.
+    Returns two odd and even lists, selected from the specified range.
     """
 
     list_even_num = [x for x in range(start, finish + 1) if x % 2 == 0]
@@ -29,7 +32,7 @@ def series(start: int, finish: int) -> Dict[str, List[int]]:
 
     return {
         "List of even numbers": list_even_num,
-        "List of odd numbers": list_odd_num
+        "List of odd numbers": list_odd_num,
     }
 
 
@@ -52,7 +55,7 @@ def prime_numbers_call(num: int) -> Optional[Dict[str, int]]:
 
 def gen_random_name() -> str:
     """
-        Generates a random number and converts it to 16-digit number system.
+    Generates a random number and converts it to 16-digit number system.
     """
 
     return os.urandom(16).hex()
@@ -70,13 +73,13 @@ def write_file(filename: str, numbers: dict, user: str) -> None:
     file_path = Path(filename)
 
     if not file_path.is_file():
-        with open(filename, 'w') as new_file:
+        with open(filename, "w") as new_file:
             new_data = json.dumps(numbers)
             new_file.writelines(new_data)
     else:
         with open(filename) as file:
             old_data = json.load(file)
-            with open(filename, 'w') as f1:
+            with open(filename, "w") as f1:
                 if user in old_data.keys():
                     old_data[user] += numbers[user]
                     new_data = json.dumps(old_data)
@@ -112,7 +115,7 @@ def execute_sql(sql: str) -> List[tuple]:
             return rows
 
 
-def get_data(user: str)-> Optional[int]:
+def get_data(user: str) -> Optional[int]:
     """Retrieving data by name."""
 
     num: Optional[int] = None
@@ -166,7 +169,7 @@ def insert_new_user(user: str, number: int) -> None:
     execute_sql(sql)
 
 
-def save_number(user: str, number: int)-> None:
+def save_number(user: str, number: int) -> None:
     """Saving data to the database."""
 
     if user_exists(user):
