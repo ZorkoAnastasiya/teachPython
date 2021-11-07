@@ -1,4 +1,5 @@
 const TASK_1_URL = '/sum_cube/';
+const TASK_3_URL = '/prime_numbers_call/';
 
 async function api_call_get(url){
     const request = await fetch(
@@ -11,6 +12,12 @@ async function api_call_get(url){
 
 async function cube(number){
     const url = TASK_1_URL + number;
+    const payload = await api_call_get(url);
+    return payload.data;
+}
+
+async function prime_numbers(number){
+    const url = TASK_3_URL + number;
     const payload = await api_call_get(url);
     return payload.data;
 }
@@ -32,7 +39,7 @@ async function setUpTask3(){
 
     input.addEventListener("input", async function(){
         const number = input.value;
-        const result = await prime_numbers_call(number);
+        const result = await prime_numbers(number);
         span.textContent = result;
     });
 }
